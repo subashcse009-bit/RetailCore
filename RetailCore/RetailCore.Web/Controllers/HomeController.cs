@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using RetailCore.Models;
+using RetailCore.Web.Models;
 
-namespace RetailCore.Controllers
+namespace RetailCore.Web.Controllers
 {
     public class HomeController : Controller
     {

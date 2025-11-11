@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCore.Web", "RetailCore\RetailCore.Web.csproj", "{6FB2CBA6-5A44-4AE5-89DF-8F6F1D692C77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCore.Web", "RetailCore.Web\RetailCore.Web.csproj", "{6FB2CBA6-5A44-4AE5-89DF-8F6F1D692C77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailCore.DataAccess", "RetailCore.DataAccess\RetailCore.DataAccess.csproj", "{780BA3C7-9489-413E-8179-3E195F928884}"
 EndProject

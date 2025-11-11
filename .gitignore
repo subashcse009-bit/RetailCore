@@ -17,3 +17,7 @@
 /RetailCore/.vs/ProjectEvaluation
 /RetailCore/RetailCore.Web/.vs
 /RetailCore/RetailCore.Web/obj
+/RetailCore/RetailCore.DataAccess/bin/Debug/net8.0
+/RetailCore/RetailCore.Model/bin/Debug/net8.0
+/RetailCore/RetailCore.Utilities/bin/Debug/net8.0
+/RetailCore/RetailCore.Web/bin/Debug/net8.0

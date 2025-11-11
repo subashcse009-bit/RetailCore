@@ -1,4 +1,4 @@
-namespace RetailCore.Models
+namespace RetailCore.Web.Models
 {
     public class ErrorViewModel
     {

@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using RetailCore.Web.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Configure DbContext with SQL Server
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -14,6 +21,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//WWWROOT FOLDER FOR STATIC FILES
 app.UseStaticFiles();
 
 app.UseRouting();
