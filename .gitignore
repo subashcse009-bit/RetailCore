@@ -3,3 +3,17 @@
 ################################################################################
 
 /RetailCore.MVC/.vs/RetailCore/CopilotIndices/17.14.1091.29919
+/RetailCore/.vs/RetailCore/CopilotIndices/17.14.1091.29919
+/RetailCore/bin/Debug/net8.0
+/RetailCore/obj
+/RetailCore/.vs/RetailCore
+/RetailCore/RetailCore/.vs
+/RetailCore/RetailCore/obj
+*.suo
+/RetailCore.MVC/.vs/RetailCore/v17/DocumentLayout.json
+/RetailCore/RetailCore.DataAccess/obj
+/RetailCore/RetailCore.Model/obj
+/RetailCore/RetailCore.Utilities/obj
+/RetailCore/.vs/ProjectEvaluation
+/RetailCore/RetailCore.Web/.vs
+/RetailCore/RetailCore.Web/obj
