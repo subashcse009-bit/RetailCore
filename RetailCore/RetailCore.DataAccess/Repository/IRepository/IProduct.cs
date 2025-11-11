@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RetailCore.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace RetailCore.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IProduct : IRepository<Product>
     {
-        public ICategory Category { get; }
-        public IProduct Product { get; }
-        void Save();
+        void Updaet(Product product);
     }
 }
