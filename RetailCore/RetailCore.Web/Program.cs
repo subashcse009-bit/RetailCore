@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RetailCore.DataAccess.Data;
+using RetailCore.DataAccess.Repository;
+using RetailCore.DataAccess.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllersWithViews();
 //Configure DbContext with SQL Server
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ICategory, CategoryRepository>();
 
 var app = builder.Build();
 

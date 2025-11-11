@@ -1,6 +1,6 @@
 Pending Item
 Session 4 - Design
 Session 3 - Full
-
+Session 4 DI
 
 Code First Approach
