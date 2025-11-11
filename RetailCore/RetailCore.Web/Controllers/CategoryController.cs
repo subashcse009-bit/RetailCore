@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RetailCore.Web.Data;
-using RetailCore.Web.Models;
+using RetailCore.DataAccess.Data;
+using RetailCore.Model;
 
 namespace RetailCore.Web.Controllers
 {

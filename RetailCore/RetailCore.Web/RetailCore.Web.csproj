@@ -13,4 +13,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\RetailCore.DataAccess\RetailCore.DataAccess.csproj" />
+	</ItemGroup>
 </Project>

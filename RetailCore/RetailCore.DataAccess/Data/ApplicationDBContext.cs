@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RetailCore.Web.Models;
+using RetailCore.Model;
 
-namespace RetailCore.Web.Data
+namespace RetailCore.DataAccess.Data
 {
     public class ApplicationDBContext : DbContext
     {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace RetailCore.Web.Migrations
+namespace RetailCore.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class CategoryTable : Migration
