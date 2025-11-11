@@ -7,15 +7,15 @@ namespace RetailCore.Web.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategory _category = null;
-        public CategoryController(ICategory category)
+        private readonly IUnitOfWork _unitOfWork = null;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _category = category;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            List<Category> lstCategoryList = _category.GetAll().ToList();
+            List<Category> lstCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(lstCategoryList);
         }
 
@@ -34,8 +34,8 @@ namespace RetailCore.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _category.Add(category);
-                _category.Save();
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Category.Save();
                 TempData["Success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -48,7 +48,7 @@ namespace RetailCore.Web.Controllers
             {
                 return NotFound();
             }
-            Category category = _category.Get(lobjCat => lobjCat.Id == id);
+            Category category = _unitOfWork.Category.Get(lobjCat => lobjCat.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -65,8 +65,8 @@ namespace RetailCore.Web.Controllers
             }
             if (ModelState.IsValid)
             {
-                _category.Update(category);
-                _category.Save();
+                _unitOfWork.Category.Update(category);
+                _unitOfWork.Category.Save();
                 TempData["Success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -79,7 +79,7 @@ namespace RetailCore.Web.Controllers
             {
                 return NotFound();
             }
-            Category category = _category.Get(lobjCat => lobjCat.Id == id);
+            Category category = _unitOfWork.Category.Get(lobjCat => lobjCat.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -90,14 +90,14 @@ namespace RetailCore.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            Category category = _category.Get(lobjCat => lobjCat.Id == id);
+            Category category = _unitOfWork.Category.Get(lobjCat => lobjCat.Id == id);
 
             if (category == null)
             {
                 return NotFound();
             }
-            _category.Remove(category);
-            _category.Save();
+            _unitOfWork.Category.Remove(category);
+            _unitOfWork.Category.Save();
             TempData["Success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }

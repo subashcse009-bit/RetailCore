@@ -4,3 +4,6 @@ Session 3 - Full
 Session 4 DI
 
 Code First Approach
+Repo Pattern
+Unit Of Pattern 
+Interface segregation SOLID principle
