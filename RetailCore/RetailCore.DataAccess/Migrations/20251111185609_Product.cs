@@ -7,7 +7,7 @@
 namespace RetailCore.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Product : Migration
+    public partial class ProductTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

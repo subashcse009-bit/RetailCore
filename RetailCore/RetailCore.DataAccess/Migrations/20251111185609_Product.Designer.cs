@@ -12,7 +12,7 @@ namespace RetailCore.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
     [Migration("20251111185609_Product")]
-    partial class Product
+    partial class ProductTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

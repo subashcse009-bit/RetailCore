@@ -16,10 +16,7 @@ namespace RetailCore.DataAccess.Repository
         {
             _dbContext= dbContext;
         }
-        public void Save()
-        {
-            _dbContext.SaveChanges();
-        }
+
         public void Update(Category category)
         {
             _dbContext.Categories.Update(category);

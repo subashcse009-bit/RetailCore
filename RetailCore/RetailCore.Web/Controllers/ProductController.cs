@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
+using RetailCore.Web.Models;
 
 namespace RetailCore.Web.Controllers
 {
@@ -16,7 +17,7 @@ namespace RetailCore.Web.Controllers
         public IActionResult Index()
         {
             List<Product> products = _unitOfWork.Product.GetAll().ToList();
-            return View();
+            return View(products);
         }
 
         public ActionResult Create()
@@ -24,13 +25,73 @@ namespace RetailCore.Web.Controllers
             return View();
         }
 
-        public ActionResult Edit()
+        [HttpPost]
+        public ActionResult Create(Product product)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Add(product);
+                _unitOfWork.Save();
+                TempData["Success"] = "Category created successfully";
+                return RedirectToAction("Index");
+            }
+            return View("Product", product);
         }
-        public ActionResult Delete()
+
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Update(product);
+                _unitOfWork.Save();
+                TempData["Success"] = "Category updated successfully";
+                return RedirectToAction("Index");
+            }
+            return View("Edit", product);
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
+        {
+            Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.Product.Remove(product);
+            _unitOfWork.Save();
+            TempData["Success"] = "Category deleted successfully";
+            return RedirectToAction("Index");
         }
     }
 }

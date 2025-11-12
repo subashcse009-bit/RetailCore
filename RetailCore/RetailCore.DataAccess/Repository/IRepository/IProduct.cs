@@ -9,6 +9,6 @@ namespace RetailCore.DataAccess.Repository.IRepository
 {
     public interface IProduct : IRepository<Product>
     {
-        void Updaet(Product product);
+        void Update(Product product);
     }
 }

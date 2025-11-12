@@ -35,7 +35,7 @@ namespace RetailCore.Web.Controllers
             if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Add(category);
-                _unitOfWork.Category.Save();
+                _unitOfWork.Save();
                 TempData["Success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
@@ -66,7 +66,7 @@ namespace RetailCore.Web.Controllers
             if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Update(category);
-                _unitOfWork.Category.Save();
+                _unitOfWork.Save();
                 TempData["Success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -97,7 +97,7 @@ namespace RetailCore.Web.Controllers
                 return NotFound();
             }
             _unitOfWork.Category.Remove(category);
-            _unitOfWork.Category.Save();
+            _unitOfWork.Save();
             TempData["Success"] = "Category deleted successfully";
             return RedirectToAction("Index");
         }

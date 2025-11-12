@@ -10,6 +10,5 @@ namespace RetailCore.DataAccess.Repository.IRepository
     public interface ICategory: IRepository<Category>
     {
         void Update(Category category);
-        void Save();
     }
 }
