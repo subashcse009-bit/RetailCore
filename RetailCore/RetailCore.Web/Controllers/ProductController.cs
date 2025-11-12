@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using RetailCore.DataAccess.Repository;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
+using RetailCore.Model.ViewModel;
 using RetailCore.Web.Models;
 
 namespace RetailCore.Web.Controllers
@@ -20,49 +24,64 @@ namespace RetailCore.Web.Controllers
             return View(products);
         }
 
-        public ActionResult Create()
+        public ActionResult Upsert(int? id)
         {
-            return View();
+            //ViewBag.CategoryList = categoryList;
+            //ViewData["CategoryList"] = categoryList;
+
+            ProductVM productVM = new ProductVM()
+            {
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().
+                Select(cat => new SelectListItem
+                {
+                    Text = cat.Name,
+                    Value = cat.Id.ToString()
+                })
+            };
+            if (id == null || id == 0)
+            {
+                //Create
+                return View(productVM);
+            }
+            else
+            {
+                //Update
+                productVM.Product = _unitOfWork.Product.Get(prod => prod.Id == id);
+                return View(productVM);
+            }
         }
 
         [HttpPost]
-        public ActionResult Create(Product product)
+        public ActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(product);
+                if (productVM.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productVM.Product);
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(productVM.Product);
+                }
                 _unitOfWork.Save();
+                // TempData is used to pass a one - time success message from the controller to the next request.
+                // It stores data temporarily in session, survives a single redirect, and is cleared automatically after being read.
                 TempData["Success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
-            return View("Create", product);
-        }
+            else
+            {
+                productVM.CategoryList = _unitOfWork.Category.GetAll().
+                Select(cat => new SelectListItem
+                {
+                    Text = cat.Name,
+                    Value = cat.Id.ToString()
+                });
 
-        public ActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
+                return View(productVM);
             }
-            Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(product);
-                _unitOfWork.Save();
-                TempData["Success"] = "Product updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View("Edit", product);
         }
 
         public ActionResult Delete(int? id)

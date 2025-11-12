@@ -1,5 +1,4 @@
 ﻿using RetailCore.DataAccess.Data;
-using RetailCore.DataAccess.Migrations;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
 using System;
