@@ -32,10 +32,10 @@ namespace RetailCore.Web.Controllers
             {
                 _unitOfWork.Product.Add(product);
                 _unitOfWork.Save();
-                TempData["Success"] = "Category created successfully";
+                TempData["Success"] = "Product created successfully";
                 return RedirectToAction("Index");
             }
-            return View("Product", product);
+            return View("Create", product);
         }
 
         public ActionResult Edit(int? id)
@@ -59,7 +59,7 @@ namespace RetailCore.Web.Controllers
             {
                 _unitOfWork.Product.Update(product);
                 _unitOfWork.Save();
-                TempData["Success"] = "Category updated successfully";
+                TempData["Success"] = "Product updated successfully";
                 return RedirectToAction("Index");
             }
             return View("Edit", product);
@@ -90,7 +90,7 @@ namespace RetailCore.Web.Controllers
             }
             _unitOfWork.Product.Remove(product);
             _unitOfWork.Save();
-            TempData["Success"] = "Category deleted successfully";
+            TempData["Success"] = "Product deleted successfully";
             return RedirectToAction("Index");
         }
     }
