@@ -3,6 +3,7 @@ Session 4 - Design
 Session 3 - Full
 Session 4 DI
 ViewBag
+ImageURL
 
 Code First Approach
 Repo Pattern

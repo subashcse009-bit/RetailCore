@@ -16,4 +16,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\RetailCore.DataAccess\RetailCore.DataAccess.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="wwwroot\images\product\" />
+	</ItemGroup>
 </Project>

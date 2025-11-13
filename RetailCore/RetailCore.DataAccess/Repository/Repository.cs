@@ -17,21 +17,42 @@ namespace RetailCore.DataAccess.Repository
         public Repository(ApplicationDBContext dbContext)
         {
             _dbContext = dbContext;
-            this.dbSet= _dbContext.Set<T>();
+            this.dbSet = _dbContext.Set<T>();
         }
         public void Add(T entity)
         {
-           dbSet.Add(entity);
+            dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
-           return dbSet.FirstOrDefault(filter);
+            IQueryable<T> query = dbSet;
+            query = query.Where(filter);
+            if (!string.IsNullOrWhiteSpace(includeProperties))
+            {
+                foreach (var property in includeProperties
+
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
+            return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
-            return dbSet.ToList();
+            IQueryable<T> query = dbSet;
+            if (!string.IsNullOrWhiteSpace(includeProperties))
+            {
+                foreach (var property in includeProperties
+                    
+                    .Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries)) 
+                {
+                    query = query.Include(property);
+                }
+            }
+            return query.ToList();
         }
 
         public void Remove(T entity)
@@ -41,7 +62,7 @@ namespace RetailCore.DataAccess.Repository
 
         public void RemoveRange(IEnumerable<T> entity)
         {
-           dbSet.RemoveRange(entity);
+            dbSet.RemoveRange(entity);
         }
     }
 }

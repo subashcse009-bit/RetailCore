@@ -19,7 +19,23 @@ namespace RetailCore.DataAccess.Repository
 
         public void Update(Product product)
         {
-            _dbContext.Products.Update(product);
+            var lbusProduct = _dbContext.Products.FirstOrDefault(prod => prod.Id == product.Id);
+            if (lbusProduct != null)
+            {
+                lbusProduct.Title = product.Title;
+                lbusProduct.ISBN = product.ISBN;
+                lbusProduct.Description = product.Description;
+                lbusProduct.Price = product.Price;
+                lbusProduct.ListPrice = product.ListPrice;
+                lbusProduct.CategoryId = product.CategoryId;
+                lbusProduct.Description = product.Description;
+                lbusProduct.Price50 = product.Price50;
+                lbusProduct.Price100 = product.Price100;
+                if (!string.IsNullOrEmpty(product.ImageUrl))
+                {
+                    lbusProduct.ImageUrl = product.ImageUrl;
+                }
+            }
         }
 
     }

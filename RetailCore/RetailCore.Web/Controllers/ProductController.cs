@@ -12,15 +12,16 @@ namespace RetailCore.Web.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll().ToList();
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return View(products);
         }
 
@@ -57,18 +58,45 @@ namespace RetailCore.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images/product");
+
+                    //Delete old file
+                    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                    {
+                        string oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    productVM.Product.ImageUrl = @"/images/product/" + fileName;
+                }
                 if (productVM.Product.Id == 0)
                 {
+                    TempData["Success"] = "Product created successfully";
                     _unitOfWork.Product.Add(productVM.Product);
                 }
                 else
                 {
+                    TempData["Success"] = "Product updated successfully";
                     _unitOfWork.Product.Update(productVM.Product);
                 }
                 _unitOfWork.Save();
                 // TempData is used to pass a one - time success message from the controller to the next request.
                 // It stores data temporarily in session, survives a single redirect, and is cleared automatically after being read.
-                TempData["Success"] = "Product created successfully";
+
                 return RedirectToAction("Index");
             }
             else
@@ -84,33 +112,65 @@ namespace RetailCore.Web.Controllers
             }
         }
 
-        public ActionResult Delete(int? id)
+        #region Comment Delete 
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(product);
+        //}
+
+        //[HttpPost, ActionName("Delete")]
+        //public IActionResult DeletePost(int? id)
+        //{
+        //    Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
+
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _unitOfWork.Product.Remove(product);
+        //    _unitOfWork.Save();
+        //    TempData["Success"] = "Product deleted successfully";
+        //    return RedirectToAction("Index");
+        //}
+
+        #endregion
+
+        #region API CALLS
+        public IActionResult GetAll()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
+            return Json(new { data = products });
         }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
+        [HttpDelete]
+        public IActionResult Delete(int? id)
         {
-            Product product = _unitOfWork.Product.Get(lobjCat => lobjCat.Id == id);
-
-            if (product == null)
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
+            if (productToBeDeleted == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            _unitOfWork.Product.Remove(product);
+            string oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
-            TempData["Success"] = "Product deleted successfully";
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, message = "Delete Successful" });
         }
+        #endregion
     }
 }
