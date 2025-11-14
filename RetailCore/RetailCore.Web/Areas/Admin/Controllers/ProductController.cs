@@ -7,8 +7,9 @@ using RetailCore.Model;
 using RetailCore.Model.ViewModel;
 using RetailCore.Web.Models;
 
-namespace RetailCore.Web.Controllers
+namespace RetailCore.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

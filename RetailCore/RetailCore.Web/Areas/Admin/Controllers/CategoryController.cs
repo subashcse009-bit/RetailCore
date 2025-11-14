@@ -3,8 +3,9 @@ using RetailCore.DataAccess.Data;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
 
-namespace RetailCore.Web.Controllers
+namespace RetailCore.Web.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork = null;
