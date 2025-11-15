@@ -1,15 +1,18 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RetailCore.DataAccess.Repository;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
 using RetailCore.Model.ViewModel;
+using RetailCore.Utilities;
 using RetailCore.Web.Models;
 
 namespace RetailCore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = RetailCoreConstants.Roles.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

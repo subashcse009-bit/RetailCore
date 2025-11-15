@@ -3,6 +3,8 @@ using RetailCore.DataAccess.Data;
 using RetailCore.DataAccess.Repository;
 using RetailCore.DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
+using RetailCore.Utilities;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +15,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+builder.Services.ConfigureApplicationCookie(options => {
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,9 +37,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 //WWWROOT FOLDER FOR STATIC FILES
 app.UseStaticFiles();
-
+    
 app.UseRouting();
-app.UseAuthorization();
+app.UseAuthentication(); 
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllerRoute(

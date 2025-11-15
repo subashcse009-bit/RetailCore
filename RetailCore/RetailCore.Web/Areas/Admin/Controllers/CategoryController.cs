@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RetailCore.DataAccess.Data;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
+using RetailCore.Utilities;
 
 namespace RetailCore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles =RetailCoreConstants.Roles.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork = null;

@@ -18,6 +18,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\RetailCore.DataAccess\RetailCore.DataAccess.csproj" />
+	  <ProjectReference Include="..\RetailCore.Utilities\RetailCore.Utilities.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Controllers\" />
