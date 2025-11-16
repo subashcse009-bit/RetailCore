@@ -11,6 +11,8 @@ namespace RetailCore.DataAccess.Repository.IRepository
         public ICategory Category { get; }
         public IProduct Product { get; }
         public ICompany Company { get; }
+        public IShoppingCart ShoppingCart { get; }
+        public IApplicationUser ApplicationUser { get; }
         void Save();
     }
 }

@@ -5,8 +5,14 @@ Session 4 DI
 ViewBag
 ImageURL
 Areas
+Cart Index toaster
 
 Code First Approach
 Repo Pattern
 Unit Of Pattern 
 Interface segregation SOLID principle
+
+Admin@1234
+
+AQAAAAIAAYagAAAAEDOl/LUcjIUxpPN3gzNTWBZHPeIh4cnqHXKn/VLHCz2dpbBTBIllIUIiuOnkjFznbA==
+AQAAAAIAAYagAAAAEHBfxn+7EcxybfJ2Jymquiu1QE+OIPAjT+1/7jWUN/QGRDAEK61aN2a1deMkooYiTg==

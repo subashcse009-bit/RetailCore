@@ -14,12 +14,17 @@ namespace RetailCore.DataAccess.Repository
         public ICategory Category { get; private set; }
         public IProduct Product { get; private set; }
         public ICompany Company { get; private set; }
+        public IShoppingCart ShoppingCart { get; private set; }
+        public IApplicationUser ApplicationUser { get; private set; }
+
         public UnitOfWork(ApplicationDBContext dbContext)
         {
             _dbContext = dbContext;
             Category = new CategoryRepository(_dbContext);
             Product = new ProductRepository(_dbContext);
             Company = new CompanyRepository(_dbContext);
+            ShoppingCart = new ShoppingCartRepository(_dbContext);
+            ApplicationUser = new ApplicationUserRepository(_dbContext);
         }
         public void Save()
         {
