@@ -10,6 +10,7 @@ namespace RetailCore.DataAccess.Repository.IRepository
     {
         public ICategory Category { get; }
         public IProduct Product { get; }
+        public ICompany Company { get; }
         void Save();
     }
 }

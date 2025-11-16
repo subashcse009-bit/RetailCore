@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace RetailCore.DataAccess.Repository
 {
-    public class UnitOfWork: IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDBContext _dbContext;
         public ICategory Category { get; private set; }
         public IProduct Product { get; private set; }
+        public ICompany Company { get; private set; }
         public UnitOfWork(ApplicationDBContext dbContext)
         {
-            _dbContext= dbContext;
-            Category= new CategoryRepository(_dbContext);
+            _dbContext = dbContext;
+            Category = new CategoryRepository(_dbContext);
             Product = new ProductRepository(_dbContext);
+            Company = new CompanyRepository(_dbContext);
         }
         public void Save()
         {
