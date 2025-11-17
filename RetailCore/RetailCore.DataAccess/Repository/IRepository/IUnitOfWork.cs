@@ -13,6 +13,8 @@ namespace RetailCore.DataAccess.Repository.IRepository
         public ICompany Company { get; }
         public IShoppingCart ShoppingCart { get; }
         public IApplicationUser ApplicationUser { get; }
+        public IOrderHeader OrderHeader { get; }
+        public IOrderDetail OrderDetail { get; }
         void Save();
     }
 }

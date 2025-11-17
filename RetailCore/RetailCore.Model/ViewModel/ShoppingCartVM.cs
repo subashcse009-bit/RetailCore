@@ -9,6 +9,6 @@ namespace RetailCore.Model.ViewModel
     public class ShoppingCartVM
     {
         public IEnumerable<ShoppingCart> ShoppingCarts { get; set; }
-        public double OrderTotal { get; set; }
+        public OrderHeader OrderHeader { get; set; }
     }
 }

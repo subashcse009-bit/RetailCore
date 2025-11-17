@@ -15,6 +15,8 @@ namespace RetailCore.DataAccess.Repository
         public IProduct Product { get; private set; }
         public ICompany Company { get; private set; }
         public IShoppingCart ShoppingCart { get; private set; }
+        public IOrderHeader OrderHeader { get; private set; }
+        public IOrderDetail OrderDetail { get; private set; }
         public IApplicationUser ApplicationUser { get; private set; }
 
         public UnitOfWork(ApplicationDBContext dbContext)
@@ -24,6 +26,8 @@ namespace RetailCore.DataAccess.Repository
             Product = new ProductRepository(_dbContext);
             Company = new CompanyRepository(_dbContext);
             ShoppingCart = new ShoppingCartRepository(_dbContext);
+            OrderHeader = new OrderHeaderRepository(_dbContext);
+            OrderDetail = new OrderDetailRepository(_dbContext);
             ApplicationUser = new ApplicationUserRepository(_dbContext);
         }
         public void Save()

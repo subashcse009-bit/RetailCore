@@ -1,0 +1,11 @@
+AsNoTracking 
+Routing 
+Data Seeding
+Middleware
+Program.cs
+Register Service
+Scoped
+Transient
+Repository Pattern
+Code First
+Unit of Work
