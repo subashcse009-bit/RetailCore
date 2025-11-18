@@ -4,6 +4,7 @@ using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
 using RetailCore.Model.ViewModel;
 using RetailCore.Utilities;
+using System.Numerics;
 using System.Security.Claims;
 
 namespace RetailCore.Web.Areas.Customer.Controllers
@@ -43,7 +44,7 @@ namespace RetailCore.Web.Areas.Customer.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ShoppingCartVM = new ShoppingCartVM
+            ShoppingCartVM = new()
             {
                 ShoppingCarts = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserdId == userId, includeProperties: "Product"),
                 OrderHeader = new()
@@ -72,16 +73,12 @@ namespace RetailCore.Web.Areas.Customer.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ShoppingCartVM = new ShoppingCartVM
-            {
-                ShoppingCarts = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserdId == userId, includeProperties: "Product"),
-                OrderHeader = new()
-            };
+            ShoppingCartVM.ShoppingCarts = _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserdId == userId, includeProperties: "Product");
 
             ShoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            ApplicationUser lbusApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
             foreach (var cart in ShoppingCartVM.ShoppingCarts)
             {
@@ -89,7 +86,7 @@ namespace RetailCore.Web.Areas.Customer.Controllers
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
 
-            if (ShoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+            if (lbusApplicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //it is regular user
                 ShoppingCartVM.OrderHeader.PaymentStatus = RetailCoreConstants.PaymentStatus.PaymentStatusPending;
@@ -106,7 +103,7 @@ namespace RetailCore.Web.Areas.Customer.Controllers
             _unitOfWork.Save();
 
 
-            foreach(var cart in ShoppingCartVM.ShoppingCarts)
+            foreach (var cart in ShoppingCartVM.ShoppingCarts)
             {
                 OrderDetail orderDetail = new OrderDetail()
                 {
@@ -119,8 +116,18 @@ namespace RetailCore.Web.Areas.Customer.Controllers
             }
             _unitOfWork.Save();
 
+            if (lbusApplicationUser.CompanyId.GetValueOrDefault() == 0) 
+            {
+                //it is a regular customer and we need to capture the payment 
+                //stripe logiic 
+            }
 
-            return View(ShoppingCartVM);
+            return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
+        }
+
+        public IActionResult OrderConfirmation(int id)
+        {
+            return View(id);
         }
 
         public IActionResult Plus(int? cartId)
