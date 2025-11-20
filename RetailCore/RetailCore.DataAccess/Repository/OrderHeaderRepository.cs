@@ -21,5 +21,32 @@ namespace RetailCore.DataAccess.Repository
         {
             _dbContext.OrderHeaders.Update(orderHeader);
         }
+
+        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
+        {
+            var lbusOrderHeader = _dbContext.OrderHeaders.FirstOrDefault(u => u.Id == id);
+            if (lbusOrderHeader != null)
+            {
+                lbusOrderHeader.OrderStatus = orderStatus;
+                if (!string.IsNullOrEmpty(paymentStatus))
+                {
+                    lbusOrderHeader.PaymentStatus = paymentStatus;
+                }
+            }
+        }
+
+        public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
+        {
+            var lbusOrderHeader = _dbContext.OrderHeaders.FirstOrDefault(u => u.Id == id);
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                lbusOrderHeader.SessionId = sessionId;
+            }
+            if (!string.IsNullOrEmpty(paymentIntentId))
+            {
+                lbusOrderHeader.PaymentIntentId = paymentIntentId;
+                lbusOrderHeader.PaymentDate = DateTime.Now;
+            }
+        }
     }
 }

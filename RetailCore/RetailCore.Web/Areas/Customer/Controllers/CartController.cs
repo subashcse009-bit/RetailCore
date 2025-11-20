@@ -116,10 +116,18 @@ namespace RetailCore.Web.Areas.Customer.Controllers
             }
             _unitOfWork.Save();
 
-            if (lbusApplicationUser.CompanyId.GetValueOrDefault() == 0) 
+            if (lbusApplicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //it is a regular customer and we need to capture the payment 
                 //stripe logiic 
+
+                var sessionId = Guid.NewGuid().ToString();
+
+                _unitOfWork.OrderHeader.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.Id, sessionId, ShoppingCartVM.OrderHeader.PaymentIntentId);
+
+                _unitOfWork.Save();
+
+                return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
             }
 
             return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
@@ -127,6 +135,22 @@ namespace RetailCore.Web.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
+            OrderHeader lbusOrderHeader = _unitOfWork.OrderHeader.Get(g => g.Id == id, includeProperties: "ApplicationUser");
+
+            if (lbusOrderHeader != null && lbusOrderHeader.PaymentStatus != RetailCoreConstants.PaymentStatus.PaymentStatusDelayedPayment)
+            {
+                var paymentIntentId = Guid.NewGuid().ToString();
+
+                _unitOfWork.OrderHeader.UpdateStripePaymentID(id, lbusOrderHeader.SessionId, paymentIntentId);
+                _unitOfWork.OrderHeader.UpdateStatus(id, RetailCoreConstants.OrderStatus.StatusApproved, RetailCoreConstants.PaymentStatus.PaymentStatusApproved);
+                _unitOfWork.Save();
+            }
+
+            List<ShoppingCart> lstShoppingCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserdId == lbusOrderHeader.ApplicationUserId).ToList();
+
+            _unitOfWork.ShoppingCart.RemoveRange(lstShoppingCart);
+            _unitOfWork.Save();
+
             return View(id);
         }
 
