@@ -165,9 +165,13 @@ namespace RetailCore.Web.Areas.Customer.Controllers
 
         public IActionResult Minus(int? cartId)
         {
-            ShoppingCart ldoshoppingCart = _unitOfWork.ShoppingCart.Get(g => g.Id == cartId);
+            ShoppingCart ldoshoppingCart = _unitOfWork.ShoppingCart.Get(g => g.Id == cartId, tracked: true);
+
             if (ldoshoppingCart.Count <= 1)
             {
+                HttpContext.Session.SetInt32(RetailCoreConstants.SessionConstants.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserdId == ldoshoppingCart.ApplicationUserdId).Count() - 1);
+
                 _unitOfWork.ShoppingCart.Remove(ldoshoppingCart);
             }
             else
@@ -181,7 +185,9 @@ namespace RetailCore.Web.Areas.Customer.Controllers
 
         public IActionResult Remove(int? cartId)
         {
-            ShoppingCart ldoshoppingCart = _unitOfWork.ShoppingCart.Get(g => g.Id == cartId);
+            ShoppingCart ldoshoppingCart = _unitOfWork.ShoppingCart.Get(g => g.Id == cartId, tracked: true);
+            HttpContext.Session.SetInt32(RetailCoreConstants.SessionConstants.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserdId == ldoshoppingCart.ApplicationUserdId).Count() - 1);
             _unitOfWork.ShoppingCart.Remove(ldoshoppingCart);
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));

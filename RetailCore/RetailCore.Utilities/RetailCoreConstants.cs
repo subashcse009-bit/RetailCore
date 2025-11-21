@@ -35,5 +35,10 @@ namespace RetailCore.Utilities
             public const string PaymentStatusRejected = "Rejected";
 
         }
+
+        public static class SessionConstants
+        {
+            public const string SessionCart = "SessionShoppingCart";
+        }
     }
 }

@@ -12,7 +12,7 @@ using RetailCore.Web.Models;
 namespace RetailCore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = RetailCoreConstants.Roles.Role_Admin)]
+    [Authorize(Roles = RetailCoreConstants.Roles.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

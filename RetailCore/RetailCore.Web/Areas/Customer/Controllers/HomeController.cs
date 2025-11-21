@@ -1,10 +1,12 @@
-using System.Diagnostics;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RetailCore.DataAccess.Repository.IRepository;
 using RetailCore.Model;
+using RetailCore.Utilities;
 using RetailCore.Web.Models;
+using System.Diagnostics;
+using System.Security.Claims;
 
 namespace RetailCore.Web.Areas.Customer.Controllers
 {
@@ -54,12 +56,16 @@ namespace RetailCore.Web.Areas.Customer.Controllers
                 //Shopping Cart Exists
                 existingShoppingCart.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(existingShoppingCart);
+                _unitOfWork.Save();
             }
             else
             {
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(RetailCoreConstants.SessionConstants.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(s => s.ApplicationUserdId == userId).Count());
             }
-            _unitOfWork.Save();
+
             TempData["success"] = "Cart updated successfully";
             return RedirectToAction(nameof(Index));
         }
