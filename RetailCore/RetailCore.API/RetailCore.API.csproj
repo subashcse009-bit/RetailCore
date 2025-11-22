@@ -10,4 +10,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RetailCore.DataAccess\RetailCore.DataAccess.csproj" />
+    <ProjectReference Include="..\RetailCore.Model\RetailCore.Model.csproj" />
+    <ProjectReference Include="..\RetailCore.Utilities\RetailCore.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>
