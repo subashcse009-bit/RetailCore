@@ -144,6 +144,8 @@ namespace RetailCore.Web.Areas.Customer.Controllers
                 _unitOfWork.OrderHeader.UpdateStripePaymentID(id, lbusOrderHeader.SessionId, paymentIntentId);
                 _unitOfWork.OrderHeader.UpdateStatus(id, RetailCoreConstants.OrderStatus.StatusApproved, RetailCoreConstants.PaymentStatus.PaymentStatusApproved);
                 _unitOfWork.Save();
+
+                HttpContext.Session.Clear();
             }
 
             List<ShoppingCart> lstShoppingCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserdId == lbusOrderHeader.ApplicationUserId).ToList();
